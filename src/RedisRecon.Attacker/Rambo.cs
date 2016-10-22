@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +12,11 @@ using ServiceStack.Redis;
 
 namespace RedisRecon.Attacker
 {
+    public enum Side
+    {
+        Left,
+        Right
+    }
     public class Rambo : IAttacker
     {
         private readonly IRedisClientsManager _clientsManager;
@@ -35,8 +41,8 @@ namespace RedisRecon.Attacker
             });
 
             
-            var leftSignal = FireAGun(leftGun);
-            var rightSignal = FireAGun(rightGun);
+            var leftSignal = FireAGun(leftGun, Side.Left, battle);
+            var rightSignal = FireAGun(rightGun, Side.Right, battle);
 
 
             WaitHandle.WaitAll(new WaitHandle[] {leftSignal, rightSignal});
@@ -44,17 +50,17 @@ namespace RedisRecon.Attacker
             Console.WriteLine(string.Format("Total onslaught took '{0}' seconds", sw.Elapsed.TotalSeconds));
         }
 
-        private ManualResetEvent FireAGun(IGun gun)
+        private ManualResetEvent FireAGun(IGun gun, Side side, Battle battle)
         {
             var signal = new ManualResetEvent(false);
             
             ThreadPool.QueueUserWorkItem(state =>
             {
                 var sw = Stopwatch.StartNew();
-                var dynamiteBuilder = new DynamiteBuilder();
+                var dynamiteBuilder = new DynamiteBuilder(side, battle);
                 gun.Fire().Subscribe(bullet =>
                 {
-                    dynamiteBuilder.Add(bullet);
+                    dynamiteBuilder.AddGunpowder(bullet);
                 }, () =>
                 {
                     sw.Stop();

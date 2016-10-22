@@ -1,4 +1,5 @@
 using System;
+using System.CodeDom;
 using System.Diagnostics;
 using System.IO;
 using RedisRecon.Shared;
@@ -8,11 +9,17 @@ namespace RedisRecon.Attacker
 {
     public class DynamiteBuilder 
     {
+        private readonly Side _side;
+        private readonly Battle _battle;
         private readonly string _dynamiteFilePath;
         private readonly StreamWriter _dynamiteFile;
+        private string _setKey;
 
-        public DynamiteBuilder()
+        public DynamiteBuilder(Side side, Battle battle)
         {
+            _side = side;
+            _battle = battle;
+            _setKey = string.Format("urn:battle:{0}:{1}", _battle.Id, _side);
             var directoryName = typeof (DynamiteBuilder).Name;
             if (!Directory.Exists(directoryName))
             {
@@ -22,9 +29,24 @@ namespace RedisRecon.Attacker
             _dynamiteFile = new StreamWriter(_dynamiteFilePath);
         }
 
-        public void Add(Bullet bullet)
+        public void AddGunpowder(Bullet bullet)
         {
-            _dynamiteFile.WriteLine($"*3\r\n$3\r\nSET\r\n${bullet.Key.Length}\r\n{bullet.Key}\r\n${bullet.Payload.Length}\r\n{bullet.Payload}\r\n");
+            var command = "SADD";
+            //var key = string.Format("urn:b:{0}:{1}:{2}", _battle.Id, _side, bullet.Key);
+            var payload = string.Format("{0}|{1}", bullet.Key, bullet.Payload);
+
+            /*
+            redis > SADD myset "Hello"
+ (integer) 1
+redis > SADD myset "World"
+ (integer) 1
+redis > SADD myset "World"
+ (integer) 0
+ */
+            _dynamiteFile.WriteLine($"*3\r\n${command.Length}\r\n{command}\r\n${_setKey.Length}\r\n{_setKey}\r\n${payload.Length}\r\n{payload}\r\n");
+
+
+           // _dynamiteFile.WriteLine($"*3\r\n$3\r\nSET\r\n${key.Length}\r\n{key}\r\n${bullet.Payload.Length}\r\n{bullet.Payload}\r\n");
         }
 
         public void Detonate()
@@ -49,6 +71,8 @@ namespace RedisRecon.Attacker
             process.WaitForExit();
             sw.Stop();
             Console.WriteLine($"Detonation Time: {sw.Elapsed.TotalSeconds} seconds");
+
+            File.Delete(_dynamiteFilePath);
         }
     }
 }
