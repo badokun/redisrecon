@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -24,6 +25,8 @@ namespace RedisRecon.Attacker
 
         public void FireAway(Battle battle, IGun leftGun, IGun rightGun)
         {
+            var sw = Stopwatch.StartNew();
+
             var battles = _clientsManager.GetClient().As<Battle>();
             battles.Store(new Battle
             {
@@ -37,24 +40,40 @@ namespace RedisRecon.Attacker
 
 
             WaitHandle.WaitAll(new WaitHandle[] {leftSignal, rightSignal});
+            sw.Stop();
+            Console.WriteLine(string.Format("Total onslaught took '{0}' seconds", sw.Elapsed.TotalSeconds));
         }
 
         private ManualResetEvent FireAGun(IGun gun)
         {
             var signal = new ManualResetEvent(false);
-            gun.Fire().Subscribe(bullet =>
+            
+            ThreadPool.QueueUserWorkItem(state =>
             {
-                
-            }, () => { OutOfAmmo(signal, gun); });
+                var sw = Stopwatch.StartNew();
+                var dynamiteBuilder = new DynamiteBuilder();
+                gun.Fire().Subscribe(bullet =>
+                {
+                    dynamiteBuilder.Add(bullet);
+                }, () =>
+                {
+                    sw.Stop();
+                    Console.WriteLine($"Gun took '{sw.Elapsed.TotalSeconds}' seconds to fire all");
+                    OutOfAmmo(signal, gun, dynamiteBuilder);
+                    
+                });
+            });
+
             return signal;
         }
 
-        private void OutOfAmmo(EventWaitHandle signal, IGun gun)
+        private void OutOfAmmo(EventWaitHandle signal, IGun gun, DynamiteBuilder dynamiteBuilder)
         {
+            Console.WriteLine("I'm out of ammo! {0}", gun);
             _log.DebugFormat("I'm out of ammo! {0}", gun);
+            dynamiteBuilder.Detonate();
+            Console.WriteLine("denotation done!");
             signal.Set();
         }
     }
-
-
 }

@@ -31,7 +31,7 @@ namespace RedisRecon.AmmoGenerator
             File.WriteAllText(filePath, header);
             using (var outfile = new StreamWriter(filePath))
             {
-                for (int i = 0; i < 5000000; i++)
+                for (int i = 0; i < 500000; i++)
                 {
                     outfile.Write($"{i},{GetRandomFirstname()},{GetRandomLastname()},{GetRandomAge()}\n");
                 }

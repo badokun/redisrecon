@@ -16,8 +16,8 @@ namespace RedisRecon.Attacker.Console
 
             var root = "..\\..\\..\\..\\SampleData";
 
-            IGun leftGun = new MachineGun(new MachineGun.Ammo() { FilePath = string.Format("{0}\\sample 20161022 083244 Left.csv", root) });
-            IGun rightGun = new MachineGun(new MachineGun.Ammo() { FilePath = string.Format("{0}\\sample 20161022 083244 Right.csv", root) });
+            IGun leftGun = new MachineGun(new MachineGun.Ammo() { FilePath = string.Format("{0}\\sample 20161022 103340 Left.csv", root) });
+            IGun rightGun = new MachineGun(new MachineGun.Ammo() { FilePath = string.Format("{0}\\sample 20161022 103340 Right.csv", root) });
             var rambo = kernel.Get<IAttacker>();
 
             var battle = new Battle();

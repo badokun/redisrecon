@@ -76,6 +76,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DynamiteBuilder.cs" />
     <Compile Include="Rambo.cs" />
     <Compile Include="IAttacker.cs" />
     <Compile Include="IGun.cs" />

@@ -23,14 +23,21 @@ namespace RedisRecon.Attacker
 
         private IEnumerable<Bullet> Read()
         {
+            int lineCount = 0;
             using (var file = new StreamReader(_ammo.FilePath))
             {
                 while (!file.EndOfStream)
                 {
+                    lineCount++;
                     var fragments = file.ReadLine().Split(',');
                     yield return new Bullet() { Key = fragments[0], Payload = string.Join(",", fragments.Skip(1)) };
                 }
             }
+        }
+
+        public override string ToString()
+        {
+            return _ammo.FilePath;
         }
 
         public class Ammo
