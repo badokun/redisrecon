@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Ninject;
 using RedisRecon.Shared;
 
 namespace RedisRecon.Attacker.Console
@@ -11,13 +12,18 @@ namespace RedisRecon.Attacker.Console
     {
         static void Main(string[] args)
         {
-            IGun leftGun = new MachineGun(new MachineGun.Ammo() { FilePath = "left.csv"});
-            IGun rightGun = new MachineGun(new MachineGun.Ammo() { FilePath = "right.csv" });
-            IAttacker rambo = new Rambo(leftGun, rightGun);
+            var kernel = new NinjectRegistration().Build();
+
+            var root = "..\\..\\..\\..\\SampleData";
+
+            IGun leftGun = new MachineGun(new MachineGun.Ammo() { FilePath = string.Format("{0}\\sample 20161022 083244 Left.csv", root) });
+            IGun rightGun = new MachineGun(new MachineGun.Ammo() { FilePath = string.Format("{0}\\sample 20161022 083244 Right.csv", root) });
+            var rambo = kernel.Get<IAttacker>();
 
             var battle = new Battle();
-            rambo.AnnouceBattle(battle);
-            rambo.FireAway();
+            rambo.FireAway(battle, leftGun, rightGun);
         }
+
+
     }
 }

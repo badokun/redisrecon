@@ -8,5 +8,7 @@ namespace RedisRecon.Shared
 {
     public class Battle
     {
+        public long Id { get; set; }
+        public DateTime StartDate { get; set; }
     }
 }

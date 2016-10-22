@@ -15,6 +15,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisRecon.Attacker.Console
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisRecon.Defender.Console", "RedisRecon.Defender.Console\RedisRecon.Defender.Console.csproj", "{A4FA27DD-F7A1-460E-B729-38B882A000F1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SampleData", "SampleData", "{4A9E0177-4093-4092-8CE5-F1169231A755}"
+	ProjectSection(SolutionItems) = preProject
+		..\sampleData\sample.txt = ..\sampleData\sample.txt
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedisRecon.AmmoGenerator", "RedisRecon.AmmoGenerator\RedisRecon.AmmoGenerator.csproj", "{FE4FCEFD-F14A-4776-8DE9-27385161A335}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +48,10 @@ Global
 		{A4FA27DD-F7A1-460E-B729-38B882A000F1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4FA27DD-F7A1-460E-B729-38B882A000F1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4FA27DD-F7A1-460E-B729-38B882A000F1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FE4FCEFD-F14A-4776-8DE9-27385161A335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE4FCEFD-F14A-4776-8DE9-27385161A335}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE4FCEFD-F14A-4776-8DE9-27385161A335}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FE4FCEFD-F14A-4776-8DE9-27385161A335}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -48,5 +59,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{9808C832-8897-4AB6-BF61-AC789E471902} = {2DB44F83-F228-4298-9CC8-CC9BB65EDA26}
 		{A4FA27DD-F7A1-460E-B729-38B882A000F1} = {2DB44F83-F228-4298-9CC8-CC9BB65EDA26}
+		{FE4FCEFD-F14A-4776-8DE9-27385161A335} = {2DB44F83-F228-4298-9CC8-CC9BB65EDA26}
 	EndGlobalSection
 EndGlobal

@@ -4,7 +4,6 @@ namespace RedisRecon.Attacker
 {
     public interface IAttacker
     {
-        void AnnouceBattle(Battle battle);
-        void FireAway();
+        void FireAway(Battle battle, IGun leftGun, IGun rightGun);
     }
 }
