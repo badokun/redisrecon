@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="magic.lua" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

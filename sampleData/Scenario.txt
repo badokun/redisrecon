@@ -1,0 +1,69 @@
+---------------
+Sample Data
+---------------
+
+Left side is missing 5
+	20,Freeda,Knknown,98
+	21,Olimpia,Dudleson,70
+	22,Donald,Kerksiek,77
+	23,Rey,Scheiber,87
+	24,Belkis,Kintigh,83
+	25,Gene,Oscar,37
+
+Right side is missing 2
+	1500,Gracia,Levering,6
+	1501,Cindi,Abellera,80
+
+
+Missmatch
+Left 	267770,Phyllis,Trumper,30
+Right	267770,Phyllis,Trumper,3
+
+-------------
+Processing
+-------------
+sdiffstore urn:battle:k:0:LeftOrMismatch urn:battle:k:0:Left urn:battle:k:0:Right
+	(integer) 3
+sdiffstore urn:battle:k:0:RightOrMismatch urn:battle:k:0:Right urn:battle:k:0:Left
+	(integer) 7
+
+
+sdiffstore urn:battle:p:0:LeftOnly urn:battle:p:0:Left urn:battle:p:0:Right
+	(integer) 2
+sdiffstore urn:battle:p:0:RightOnly urn:battle:p:0:Right urn:battle:p:0:Left
+	(integer) 6
+
+smembers urn:battle:p:0:LeftOnly
+	1) "1500"
+	2) "1501"
+
+smembers urn:battle:k:0:LeftOrMismatch
+	1) "1500|Gracia,Levering,6"
+	2) "267770|Phyllis,Trumper,30"
+	3) "1501|Cindi,Abellera,80"
+
+smembers urn:battle:p:0:RightOnly
+	1) "20"
+	2) "21"
+	3) "22"
+	4) "23"
+	5) "24"
+	6) "25"
+
+smembers urn:battle:k:0:RightOrMismatch
+	1) "20|Freeda,Knknown,98"
+	2) "25|Gene,Oscar,37"
+	3) "22|Donald,Kerksiek,77"
+	4) "267770|Phyllis,Trumper,3"
+	5) "24|Belkis,Kintigh,83"
+	6) "21|Olimpia,Dudleson,70"
+	7) "23|Rey,Scheiber,87"
+
+
+--------------
+Lua Script
+--------------
+
+C:\Projects\redisrecon\src\packages\redis-64.3.0.503\tools>redis-cli --eval ..\..\..\..\sampleData\lua_iteration.lua
+(integer) 499988
+
